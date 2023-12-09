@@ -4,7 +4,7 @@
 SERVER_URL="http://localhost:3000"
 
 # Replace with the recipient email address
-TO_EMAIL="recipient@example.com"
+TO_EMAIL="ice.codename@gmail.com"
 
 # Replace with the path to the file you want to attach
 FILE_PATH="file.txt"

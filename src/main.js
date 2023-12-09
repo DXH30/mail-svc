@@ -9,8 +9,8 @@ const port = process.env.PORT || 3000;
 app.use(fileUpload());
 
 // Retrieve email credentials from environment variables
-const emailUser = process.env.EMAIL_USER || 'your_email@gmail.com';
-const emailPass = process.env.EMAIL_PASS || 'your_email_password';
+const emailUser = process.env.EMAIL_USER || 'dhs0223@gmail.com';
+const emailPass = process.env.EMAIL_PASS || 'uxgf zgtk wjkx qwpl';
 
 // Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
