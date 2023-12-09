@@ -1,31 +1,51 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Use express-fileupload middleware to handle file uploads
+app.use(fileUpload());
+
+// Retrieve email credentials from environment variables
+const emailUser = process.env.EMAIL_USER || 'your_email@gmail.com';
+const emailPass = process.env.EMAIL_PASS || 'your_email_password';
 
 // Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'your_email@gmail.com',
-    pass: 'your_email_password',
+    user: emailUser,
+    pass: emailPass,
   },
 });
 
-// Define an endpoint to send emails
-app.post('/send-email', (req, res) => {
-  const { to, subject, text } = req.body;
+// Define a hardcoded subject and text
+const hardcodedSubject = 'Daily Report';
+const hardcodedText = 'Here is the daily report.';
 
-  if (!to || !subject || !text) {
+// Define an endpoint to send emails with attachments
+app.post('/send', (req, res) => {
+  const { email } = req.body;
+
+  if (!email || !req.files || !req.files.attachment) {
     return res.status(400).json({ error: 'Missing required parameters' });
   }
 
+  const attachment = req.files.attachment;
+
   const mailOptions = {
-    from: 'your_email@gmail.com',
-    to,
-    subject,
-    text,
+    from: emailUser,
+    to: email,
+    subject: hardcodedSubject,
+    text: hardcodedText,
+    attachments: [
+      {
+        filename: attachment.name,
+        content: attachment.data,
+      },
+    ],
   };
 
   // Send the email
@@ -41,7 +61,6 @@ app.post('/send-email', (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on port ${port}`);
 });
-
